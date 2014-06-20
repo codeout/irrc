@@ -23,7 +23,7 @@ module Irrc
       #          IRR name is also accespted.
       # block  - An optional block that can be used to customize the logger.
       #
-      # Examples:
+      # Examples
       #
       #   Irrc::Irrd::Client.new('jpirr.nic.ad.jp', queue) {|c|
       #     c.logger = Logger.new('irrc.log')

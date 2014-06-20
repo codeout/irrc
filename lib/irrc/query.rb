@@ -19,7 +19,7 @@ module Irrc
     #           :protocol - :ipv4, :ipv6 or [:ipv4, :ipv6]
     #                       A String or Symbol of protcol name is accepted. (optional)
     #
-    # Examples:
+    # Examples
     #
     #   Irrc::Query.new('AS-JPNIC', source: :jpirr, protocol: :ipv4)
     #   Irrc::Query.new('AS-JPNIC', source: [:jpirr, :radb])

@@ -13,7 +13,7 @@ module Irrc
     # threads - Number of threads to resolve prefixes per IRR/whois server.
     # block   - An optional block that can be used to customize the logger.
     #
-    # Examples:
+    # Examples
     #
     #   Irrc::Client.new(2) {|c|
     #     c.logger = Logger.new('irrc.log')
@@ -34,7 +34,7 @@ module Irrc
     #           :protocol - :ipv4, :ipv6 or [:ipv4, :ipv6]
     #                       A String or Symbol of protcol name is accepted. (optional)
     #
-    # Examples:
+    # Examples
     #
     #   client.query('AS-JPNIC', source: :jpirr, protocol: :ipv4)
     #   client.query('AS-JPNIC', source: [:jpirr, :radb])
@@ -50,7 +50,7 @@ module Irrc
 
     # Public: Run the query threads
     #
-    # Returns: Raw level Array of Queries
+    # Returns Raw level Array of Queries
     def run
       done = []
 
@@ -67,7 +67,7 @@ module Irrc
 
     # Public: Run the query threads
     #
-    # Returns: Decorated result Hash. See an example below:
+    # Returns Decorated result Hash. See an example below:
     #
     #   {"as-jpnic"=>                 # IRR object to query
     #     {:ipv4=>                    # protocol
