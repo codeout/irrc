@@ -50,7 +50,6 @@ module Irrc
             process query
             query.success
           rescue
-raise
             logger.error $!.message
             query.fail
           end
