@@ -54,7 +54,7 @@ Options:
           @options.protocol |= [:ipv6]
         end
 
-        opts.on '-t', '--threads', 'Number of threads to resolve prefixes per IRR/whois server.' do |threads|
+        opts.on '-t NUMBER', '--threads', 'Number of threads to resolve prefixes per IRR/whois server.' do |threads|
           @options.threads = threads
         end
 
