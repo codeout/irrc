@@ -84,11 +84,11 @@ module Irrc
     # Returns: A String ('as-set', 'route-set' or 'aut-num')
     def object_type
       case @_object
-      when /^AS-/i
+      when /^AS-[\w-]+$|:AS-[\w-]+$/i
         'as-set'
-      when /^RS-/i
+      when /^RS-[\w-]+$|:RS-[\w-]+$/i
         'route-set'
-      when /AS\d+$/i
+      when /^AS\d+$|:AS\d+$/i
         'aut-num'
       end
     end
