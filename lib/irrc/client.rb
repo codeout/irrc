@@ -23,12 +23,12 @@ module Irrc
       @block = block
     end
 
-    # Public: Enqueue an IRR/whois query
+    # Public: Enqueue an IRR/whois query.
     #
     # host    - FQDN of IRR/whois server. IRR name is also accespted (eg: jpirr).
     # objects - IRR objects to extract. (eg: as-set, route-set, aut-num object)
     #           Array form is also acceptable for multiple objects.
-    # options - The Hash options to pass to IRR (default: {procotol: [:ipv4, :ipv6]})
+    # options - The Hash options to pass to IRR. (default: {procotol: [:ipv4, :ipv6]})
     #           :source   - Specify authoritative IRR source names.
     #                       If not given, any source will be accepted. (optional)
     #           :protocol - :ipv4, :ipv6 or [:ipv4, :ipv6]
@@ -48,9 +48,9 @@ module Irrc
       }
     end
 
-    # Public: Run the query threads
+    # Public: Run the query threads.
     #
-    # Returns Raw level Array of Queries
+    # Returns Raw level Array of Queries.
     def run
       done = []
 
@@ -65,7 +65,7 @@ module Irrc
       done
     end
 
-    # Public: Run the query threads
+    # Public: Run the query threads.
     #
     # Returns Decorated result Hash. See an example below:
     #

@@ -79,9 +79,10 @@ module Irrc
       raise "#{object} is neither as-set, route-set nor aut-num" unless object_type
     end
 
-    # Public: Returns the object type to query
+    # Public: Returns the object type to query.
+    # See RFC2622 for details.
     #
-    # Returns: A String ('as-set', 'route-set' or 'aut-num')
+    # Returns: A String. ('as-set', 'route-set' or 'aut-num')
     def object_type
       case @_object
       when /^AS-[\w-]+$|:AS-[\w-]+$/i

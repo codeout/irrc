@@ -1,19 +1,21 @@
 require 'irrc/irr'
 require 'irrc/query_status'
+require 'irrc/subquery'
 
 module Irrc
 
-  # Public: IRR/whois query and result container
+  # Public: IRR/whois query and result container.
   class Query
     include Irrc::Irr
     include Irrc::QueryStatus
+    include Irrc::Subquery
 
     attr_reader :sources, :protocols
 
-    # Public: Create a new Query object
+    # Public: Create a new Query object.
     #
     # object  - IRR object to extract. (eg: as-set, route-set, aut-num object)
-    # options - The Hash options to pass to IRR (default: {procotol: [:ipv4, :ipv6]})
+    # options - The Hash options to pass to IRR. (default: {procotol: [:ipv4, :ipv6]})
     #           :source   - Specify authoritative IRR source names.
     #                       If not given, any source will be accepted. (optional)
     #           :protocol - :ipv4, :ipv6 or [:ipv4, :ipv6]
