@@ -11,13 +11,13 @@ module Irrc
         @options = Struct.new(:host, :source, :protocol, :threads, :debug).new(nil, [], [], 1, nil)
       end
 
-      def parse
+      def start
         OptionParser.new(&method(:options)).parse!(@args)
 
         verify_arguments
         set_default_arguments
 
-        perform
+        ::Irrc::Cli::YamlPrinter.print perform
       end
 
 
@@ -95,7 +95,7 @@ Use --help for usage.
                  end
 
         client.query(@options.host, @args, source: @options.source, protocol: @options.protocol)
-        ::Irrc::Cli::YamlPrinter.print client.perform
+        client.perform
       end
     end
   end
