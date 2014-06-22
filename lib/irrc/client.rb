@@ -36,8 +36,8 @@ module Irrc
     #
     # Examples
     #
-    #   client.query('AS-JPNIC', source: :jpirr, protocol: :ipv4)
-    #   client.query('AS-JPNIC', source: [:jpirr, :radb])
+    #   client.query(:jpirr, 'AS-JPNIC', source: :jpirr, protocol: :ipv4)
+    #   client.query(:jpirr, 'AS-JPNIC', source: [:jpirr, :radb])
     def query(host, objects, options={})
       raise ArgumentError, 'host required.' unless host
       fqdn = Irrc::Irr.host(host) || host
