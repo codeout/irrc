@@ -100,7 +100,7 @@ module Irrc
     def decorate(queries)
       Hash[
         queries.map{|query|
-          [query.object, query.result.to_h.reject{|_, val| !val }]
+          [query.object, query.result.to_h.select{|_, val| val }] if query.succeeded?
         }
       ]
     end
