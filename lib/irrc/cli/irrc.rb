@@ -89,7 +89,7 @@ Use --help for usage.
 
       def perform
         client = if @options.debug
-                   ::Irrc::Client.new(@options.threads) {|c| c.logger = Logger.new(STDOUT) }
+                   ::Irrc::Client.new(@options.threads) {|c| c.logger = Logger.new(STDERR) }
                  else
                    ::Irrc::Client.new(@options.threads)
                  end

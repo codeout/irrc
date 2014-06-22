@@ -16,7 +16,7 @@ module Irrc
 
       # Public: Create a new IRR client worker.
       #         You can customize the logger by specifying a block.
-      #         The default logger is STDOUT printer of more severe messages than INFO.
+      #         The default logger is STDERR printer of more severe messages than INFO.
       #
       # host   - FQDN of IRR. IRR name is also accespted.
       # queue  - Queue object having query jobs.

@@ -8,7 +8,7 @@ module Irrc
   class Client
     # Public: Create a new IRR/whois client worker manager.
     #         You can customize the logger by specifying a block.
-    #         The default logger is STDOUT printer of more severe messages than INFO.
+    #         The default logger is STDERR printer of more severe messages than INFO.
     #
     # threads - Number of threads to resolve prefixes per IRR/whois server.
     # block   - An optional block that can be used to customize the logger.
