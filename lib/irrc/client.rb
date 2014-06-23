@@ -101,7 +101,7 @@ module Irrc
       Hash[
         queries.map{|query|
           [query.object, query.result.to_h.select{|_, val| val }] if query.succeeded?
-        }
+        }.compact
       ]
     end
   end
