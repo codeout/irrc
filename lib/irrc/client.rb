@@ -10,7 +10,7 @@ module Irrc
     #         You can customize the logger by specifying a block.
     #         The default logger is STDERR printer of more severe messages than INFO.
     #
-    # threads - Number of threads to resolve prefixes per IRR/whois server.
+    # threads - Number of threads to resolve prefixes per IRR/whois server. (default: 1)
     # block   - An optional block that can be used to customize the logger.
     #
     # Examples
@@ -18,7 +18,7 @@ module Irrc
     #   Irrc::Client.new(2) {|c|
     #     c.logger = Logger.new('irrc.log')
     #   }
-    def initialize(threads, &block)
+    def initialize(threads=1, &block)
       @thread_limit = threads.to_i
       @block = block
     end
