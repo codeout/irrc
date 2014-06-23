@@ -94,8 +94,13 @@ Use --help for usage.
                    ::Irrc::Client.new(@options.threads)
                  end
 
-        client.query(@options.host, @args, source: @options.source, protocol: @options.protocol)
-        client.perform
+        begin
+          client.query(@options.host, @args, source: @options.source, protocol: @options.protocol)
+          client.perform
+        rescue
+          $stderr.puts $!.message
+          exit 1
+        end
       end
     end
   end
