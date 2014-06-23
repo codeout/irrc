@@ -25,8 +25,8 @@ module Irrc
     #   Irrc::Query.new('AS-JPNIC', source: [:jpirr, :radb])
     def initialize(object, options={})
       options = {protocol: [:ipv4, :ipv6]}.merge(options)
-      @sources = Array(options[:source]).compact.map(&:to_s).flatten.uniq
-      @protocols = Array(options[:protocol]).compact.map(&:to_s).flatten.uniq
+      self.sources = options[:source]
+      self.protocols = options[:protocol]
       self.object = object.to_s
     end
 
@@ -57,6 +57,20 @@ module Irrc
       result[protocol] ||= {}
       result[protocol][autnum] ||= []
       result[protocol][autnum] |= Array(prefixes)
+    end
+
+
+    private
+
+    def sources=(sources)
+      @sources = Array(sources).compact.map(&:to_s).flatten.uniq
+    end
+
+    def protocols=(protocols)
+      protocols = Array(protocols).compact.map(&:to_s).flatten.uniq
+      invalid = protocols - ['ipv4', 'ipv6']
+      raise ArgumentError, "Invalid protocol: #{invalid.join(', ')}" unless invalid.empty?
+      @protocols = protocols
     end
   end
 end
