@@ -7,14 +7,14 @@ require 'irrc/socket'
 module Irrc
   module Irrd
 
-    # Public: IRR client worker.
+    # Public: IRRd client worker.
     class Client
       include Irrc::Logging
       include Irrc::Irrd::Api
 
       attr_reader :host, :queue
 
-      # Public: Create a new IRR client worker.
+      # Public: Create a new IRRd client worker.
       #         You can customize the logger by specifying a block.
       #         The default logger is STDERR printer of more severe messages than INFO.
       #
