@@ -1,101 +1,31 @@
 require 'net/telnet'
 
-require 'irrc/irrd/api'
+require 'irrc/connecting'
 require 'irrc/logging'
+require 'irrc/parameter'
+require 'irrc/runner'
 require 'irrc/socket'
+require 'irrc/irrd/api'
 
 module Irrc
   module Irrd
 
     # Public: IRRd client worker.
     class Client
+      include Irrc::Connecting
       include Irrc::Logging
+      include Irrc::Parameter
+      include Irrc::Runner
       include Irrc::Irrd::Api
 
       attr_reader :host, :queue
 
-      # Public: Create a new IRRd client worker.
-      #         You can customize the logger by specifying a block.
-      #         The default logger is STDERR printer of more severe messages than INFO.
-      #
-      # host   - FQDN of IRR. IRR name is also accespted.
-      # queue  - Queue object having query jobs.
-      #          IRR name is also accespted.
-      # block  - An optional block that can be used to customize the logger.
-      #
-      # Examples
-      #
-      #   Irrc::Irrd::Client.new('jpirr.nic.ad.jp', queue) {|c|
-      #     c.logger = Logger.new('irrc.log')
-      #   }
-      def initialize(host, queue, &block)
-        self.host = host
-        self.queue = queue
-        instance_eval(&block) if block_given?
-      end
-
-      def run
-        done = []
-
-        loop do
-          if queue.empty?
-            close
-            return done
-          end
-
-          query = queue.pop
-          connect unless established?
-
-          begin
-            process query
-            query.success
-          rescue
-            logger.error $!.message
-            query.fail
-          end
-
-          done << query
-        end
-      end
-
 
       private
 
-      def host=(host)
-        raise ArgumentError, "Missing argument." unless host
-        @host = Irrc::Irr.host(host) || host
-      end
-
-      def queue=(queue)
-        queue.is_a?(Queue) or raise ArgumentError, "Missing argument."
-        @queue = queue
-      end
-
       def connect
-        @connection ||= logger.info("Connecting to #{@host}") &&
-          Net::Telnet.new('Host' => @host,
-                          'Port' => 43,
-                          'Telnetmode' => false,
-                          'Prompt' => return_code)
-        @connection.puts persist_command
-      end
-
-      def close
-        if established?
-          logger.info "Closing a connection to #{@host}"
-          @connection.close
-        end
-      end
-
-      def established?
-        @connection && !@connection.sock.closed?
-      end
-
-      def execute(command)
-        return if command.nil? || command == ''
-
-        logger.debug "Executing: #{command}"
-        @connection.cmd(command).tap{|result| logger.debug "Returned: #{result}" }
+        super
+        connection.puts persist_command
       end
 
       def process(query)
