@@ -1,1 +1,1 @@
-require 'irrc/cli/irrc'
+require 'irrc/cli/client'

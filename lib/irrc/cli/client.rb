@@ -5,7 +5,7 @@ require 'irrc/cli/yaml_printer'
 
 module Irrc
   module Cli
-    class Irrc
+    class Client
       def initialize(args)
         @args = args
         @options = Struct.new(:host, :source, :protocol, :threads, :debug).new(nil, [], [], 1, nil)
@@ -17,7 +17,7 @@ module Irrc
         verify_arguments
         set_default_arguments
 
-        ::Irrc::Cli::YamlPrinter.print perform
+        Irrc::Cli::YamlPrinter.print perform
       end
 
 
@@ -89,9 +89,9 @@ Use --help for usage.
 
       def perform
         client = if @options.debug
-                   ::Irrc::Client.new(@options.threads) {|c| c.logger = Logger.new(STDERR) }
+                   Irrc::Client.new(@options.threads) {|c| c.logger = Logger.new(STDERR) }
                  else
-                   ::Irrc::Client.new(@options.threads)
+                   Irrc::Client.new(@options.threads)
                  end
 
         begin

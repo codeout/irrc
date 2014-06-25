@@ -1,5 +1,6 @@
 require 'irrc/irr'
 require 'irrc/irrd'
+require 'irrc/whoisd'
 require 'irrc/query'
 
 module Irrc

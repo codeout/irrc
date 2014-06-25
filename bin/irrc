@@ -2,4 +2,4 @@
 
 require 'irrc/cli'
 
-Irrc::Cli::Irrc.new(ARGV).start
+Irrc::Cli::Client.new(ARGV).start
