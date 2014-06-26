@@ -13,6 +13,21 @@ module Irrc
         type_list[irr_name(name)] || type_list[fqdn(name)]
       end
 
+      # See RFC2622 / RFC4012 for details
+      def members_tag
+        /^(?:mp-)?members:\s*(.*)$/
+      end
+
+      # See RFC2622 / RFC4012 for details
+      def route_tag(protocol)
+        case protocol
+        when :ipv4, 'ipv4'
+          /^route:\s*(\S+)$/
+        when :ipv6, 'ipv6'
+          /^route6:\s*(\S+)$/
+        end
+      end
+
       private
 
       def irr_list

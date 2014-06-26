@@ -1,3 +1,5 @@
+require 'irrc/irr'
+
 module Irrc
   module Irrd
     module Api
@@ -45,7 +47,7 @@ module Irrc
       end
 
       def parse_prefixes_from_aut_num(result, protocol)
-        result.scan(route_tag(protocol)).flatten.uniq
+        result.scan(Irrc::Irr.route_tag(protocol)).flatten.uniq
       end
 
       # See http://www.irrd.net/irrd-user.pdf for return codes
@@ -61,15 +63,6 @@ module Irrc
         # Query with ripe option commands like "-i origin AS2515" returns doubled blank lines.
         # And we can't easily tell whether it succeeded or not.
         Regexp.union(success_code, error_code, /^\n\n$/)
-      end
-
-      def route_tag(protocol)
-        case protocol
-        when :ipv4, 'ipv4'
-          /^route:\s*(\S+)$/
-        when :ipv6, 'ipv6'
-          /^route6:\s*(\S+)$/
-        end
       end
     end
   end
