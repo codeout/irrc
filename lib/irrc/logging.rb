@@ -7,7 +7,7 @@ module Irrc
     end
 
     def logger
-      @logger ||= Logger.new(STDERR).tap{|l| l.level = Logger::WARN }
+      @logger ||= Logger.new(STDERR).tap {|l| l.level = Logger::WARN }
     end
   end
 end

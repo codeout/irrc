@@ -44,7 +44,7 @@ module Irrc
       fqdn = Irrc::Irr.host(host) || host
 
       queues[fqdn] ||= Queue.new
-      Array(objects).map{|object|
+      Array(objects).map {|object|
         queues[fqdn] << Irrc::Query.new(object, options)
       }
     end
@@ -100,8 +100,8 @@ module Irrc
 
     def decorate(queries)
       Hash[
-        queries.map{|query|
-          [query.object, query.result.to_h.select{|_, val| val }] if query.succeeded?
+        queries.map {|query|
+          [query.object, query.result.to_h.select {|_, val| val }] if query.succeeded?
         }.compact
       ]
     end

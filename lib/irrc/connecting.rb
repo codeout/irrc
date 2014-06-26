@@ -33,7 +33,7 @@ module Irrc
       return if command.nil? || command == ''
 
       logger.debug "Executing: #{command}"
-      @connection.cmd(command).tap{|result| logger.debug "Returned: #{result}" }
+      @connection.cmd(command).tap {|result| logger.debug "Returned: #{result}" }
     end
   end
 end
