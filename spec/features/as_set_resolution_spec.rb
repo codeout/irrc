@@ -37,7 +37,7 @@ describe 'as-set resolution' do
   context 'When as-set resolution is done but something wrong while further processes' do
     subject { send_query(irr, as_set) }
     before do
-      allow_any_instance_of(Irrc::Irrd::Client).to receive(:prefixes_from_aut_nums){ raise }
+      allow_any_instance_of(Irrc::Irrd::Client).to receive(:resolve_prefixes_from_aut_nums){ raise }
     end
 
     it 'ignores a halfway result' do

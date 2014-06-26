@@ -1,5 +1,6 @@
 require 'irrc/irr'
 require 'irrc/query_status'
+require 'irrc/subquery'
 
 module Irrc
 
@@ -7,6 +8,7 @@ module Irrc
   class Query
     include Irrc::Irr
     include Irrc::QueryStatus
+    include Irrc::Subquery
 
     attr_reader :sources, :protocols
 
