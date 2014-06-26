@@ -61,7 +61,7 @@ module Irrc
       def prefixes_from_route_set(query)
         command = expand_set_command(query.object)
         result = execute(command)
-        prefixes = parse_prefixes_from_route_set(result)
+        prefixes = classify_by_protocol(parse_prefixes_from_route_set(result))
 
         query.protocols.each do |protocol|
           query.add_prefix_result prefixes[protocol], nil, protocol

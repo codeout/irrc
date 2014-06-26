@@ -1,5 +1,3 @@
-require 'ipaddr'
-
 module Irrc
   module Irrd
     module Api
@@ -36,15 +34,7 @@ module Irrc
       def parse_prefixes_from_route_set(result)
         case result
         when success_code
-          prefixes = result.gsub(/^#{$1}$/, '').strip.split.reject {|p| p =~ /^A\d+$/ }.uniq
-          prefixes.each_with_object(Struct.new(:ipv4, :ipv6).new([], [])) {|prefix, result|
-            addr = IPAddr.new(prefix)
-            if addr.ipv4?
-              result.ipv4 << prefix
-            elsif addr.ipv6?
-              result.ipv6 << prefix
-            end
-          }
+          result.gsub(/^#{$1}$/, '').strip.split.reject {|p| p =~ /^A\d+$/ }.uniq
         when error_code
           raise $1
         end
