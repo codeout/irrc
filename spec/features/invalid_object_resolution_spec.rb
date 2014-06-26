@@ -7,16 +7,16 @@ describe 'Invalid object resolution' do
     context 'When invalid object specified' do
       subject { send_query(irr, 'INVALID') }
 
-      it 'reports an error' do
-        expect { subject }.to raise_error
+      it "doesn't report an error" do
+        expect(subject['INVALID']).to eq({})
       end
     end
 
     context 'When a blank String given for IRR object to resolve' do
       subject { send_query(irr, '') }
 
-      it 'reports an error' do
-        expect { subject }.to raise_error
+      it "doesn't report an error" do
+        expect(subject['']).to eq({})
       end
     end
 

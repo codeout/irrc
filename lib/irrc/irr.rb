@@ -76,7 +76,6 @@ module Irrc
 
     def object=(object)
       @_object = object
-      raise "#{object} is neither as-set, route-set nor aut-num" unless object_type
     end
 
     # Public: Returns the object type to query.
