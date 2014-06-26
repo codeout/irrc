@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'as-set resolution' do
+describe 'IRR as-set resolution' do
   include_context 'irr queries'
 
   context 'When FQDN specified for IRR server' do

@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'Invalid object resolution' do
+describe 'IRR Invalid object resolution' do
   include_context 'irr queries'
 
   describe 'Try as-jpnic with JPIRR' do
