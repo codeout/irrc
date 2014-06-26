@@ -1,10 +1,10 @@
 require 'spec_helper'
 
-describe 'IRR as-set resolution' do
-  include_context 'irr queries'
+describe 'Whois as-set resolution' do
+  include_context 'whois queries'
 
-  context 'When FQDN specified for IRR server' do
-    subject { send_query(irr_fqdn, 'AS-JPNIC') }
+  context 'When FQDN specified for Whois server' do
+    subject { send_query(whois_fqdn, 'AS-JPNIC') }
 
     it 'returns ipv4 and ipv6 prefixes by default' do
       expect(subject['AS-JPNIC'][:ipv4]['AS2515']).to include '192.41.192.0/24', '202.12.30.0/24',
@@ -13,20 +13,20 @@ describe 'IRR as-set resolution' do
     end
   end
 
-  context 'When a name specified for IRR server' do
-    subject { send_query(irr, as_set) }
+  context 'When a name specified for Whois server' do
+    subject { send_query(whois, as_set) }
 
     it 'returns the same result as if the FQDN specified' do
-      expect(subject).to eq send_query(irr_fqdn, as_set)
+      expect(subject).to eq send_query(whois_fqdn, as_set)
     end
   end
 
-  it 'gently closes connections to IRR server' do
-    expect_any_instance_of(Irrc::Irrd::Client).to receive(:close)
-    send_query(irr_fqdn, as_set)
+  it 'gently closes connections to Whois server' do
+    expect_any_instance_of(Irrc::Whoisd::Client).to receive(:close)
+    send_query(whois_fqdn, as_set)
   end
 
-  describe 'Fintering by Authoritative IRR server' do
+  describe 'Fintering by Authoritative Whois server' do
     subject { send_query(:jpirr, 'AS-JPNIC', source: :apnic) }
 
     it 'returns nothing' do
@@ -35,9 +35,9 @@ describe 'IRR as-set resolution' do
   end
 
   context 'When as-set resolution is done but something wrong while further processes' do
-    subject { send_query(irr, as_set) }
+    subject { send_query(whois, as_set) }
     before do
-      allow_any_instance_of(Irrc::Irrd::Client).to receive(:resolve_prefixes_from_aut_nums){ raise }
+      allow_any_instance_of(Irrc::Whoisd::Client).to receive(:resolve_prefixes_from_aut_nums){ raise }
     end
 
     it 'ignores a halfway result' do
@@ -46,7 +46,7 @@ describe 'IRR as-set resolution' do
   end
 
   context 'When only ipv4 is specified for protocol' do
-    subject { send_query(irr, as_set, protocol: :ipv4) }
+    subject { send_query(whois, as_set, protocol: :ipv4) }
 
     it 'returns nothing about ipv6' do
       expect(subject[as_set][:ipv6]).to be_nil
@@ -54,7 +54,7 @@ describe 'IRR as-set resolution' do
   end
 
   context 'When nil specified for protocol' do
-    subject { send_query(irr, as_set, protocol: nil) }
+    subject { send_query(whois, as_set, protocol: nil) }
 
     it 'returns nothing about the as-set' do
       expect(subject[as_set]).to eq({})
@@ -62,7 +62,7 @@ describe 'IRR as-set resolution' do
   end
 
   context 'When blank protocol specified' do
-    subject { send_query(irr, as_set, protocol: []) }
+    subject { send_query(whois, as_set, protocol: []) }
 
     it 'returns nothing about the as-set' do
       expect(subject[as_set]).to eq({})
@@ -70,46 +70,46 @@ describe 'IRR as-set resolution' do
   end
 
   context 'When an invalid protocol specified' do
-    subject { send_query(irr, as_set, protocol: :invalid) }
+    subject { send_query(whois, as_set, protocol: :invalid) }
 
     it 'reports an ArgumentError' do
       expect { subject }.to raise_error ArgumentError
     end
   end
 
-  context 'When a non-mirrored server specified for authoritative IRR server' do
-    subject { send_query(irr, as_set, source: :outsider) }
+  context 'When a non-mirrored server specified for authoritative Whois server' do
+    subject { send_query(whois, as_set, source: :outsider) }
 
     it 'returns nothing' do
       expect(subject).to eq({})
     end
   end
 
-  context 'When nil specified for authoritative IRR server' do
-    subject { send_query(irr, as_set, source: nil) }
+  context 'When nil specified for authoritative Whois server' do
+    subject { send_query(whois, as_set, source: nil) }
 
-    it 'returns a result without any filter of authoritative IRR server' do
-      expect(subject).to eq send_query(irr, as_set)
+    it 'returns a result without any filter of authoritative Whois server' do
+      expect(subject).to eq send_query(whois, as_set)
     end
   end
 
-  context 'When blank authoritative IRR server specified' do
-    subject { send_query(irr, as_set, source: []) }
+  context 'When blank authoritative Whois server specified' do
+    subject { send_query(whois, as_set, source: []) }
 
-    it 'returns a result without any filter of authoritative IRR server' do
-      expect(subject).to eq send_query(irr, as_set)
+    it 'returns a result without any filter of authoritative Whois server' do
+      expect(subject).to eq send_query(whois, as_set)
     end
   end
 
-  context 'When non-existent IRR object specified' do
-    subject { send_query(irr, 'AS-NON-EXISTENT') }
+  context 'When non-existent Whois object specified' do
+    subject { send_query(whois, 'AS-NON-EXISTENT') }
 
-    it 'ignores the IRR error' do
+    it 'ignores the Whois error' do
       expect(subject).to eq({})
     end
   end
 
-  context 'When invalid IRR server name specified' do
+  context 'When invalid Whois server name specified' do
     subject { send_query(:invalid, as_set) }
 
     it 'reports an error' do
@@ -117,7 +117,7 @@ describe 'IRR as-set resolution' do
     end
   end
 
-  context 'When non-resolvable IRR server fqdn specified' do
+  context 'When non-resolvable Whois server fqdn specified' do
     subject { send_query('non-resolvable.localdomain', as_set) }
 
     it 'reports an error' do
@@ -125,7 +125,7 @@ describe 'IRR as-set resolution' do
     end
   end
 
-  context 'When unreachable IRR server specified' do
+  context 'When unreachable Whois server specified' do
     subject { send_query('192.0.2.1', as_set) }
 
     it 'reports an error' do
@@ -133,7 +133,7 @@ describe 'IRR as-set resolution' do
     end
   end
 
-  context 'When specifing an IRR server out of service' do
+  context 'When specifing an Whois server out of service' do
     subject { send_query('127.0.0.1', as_set) }
 
     it 'reports an error' do
@@ -143,23 +143,23 @@ describe 'IRR as-set resolution' do
 
   describe 'NOTE: These may fail due to Whois database changes, not code. Check Whois database if fails.' do
     describe 'route-set' do
-      subject { send_query(irr, 'RS-RC-26462') }
+      subject { send_query(whois, 'RS-RC-26462') }
 
       it 'returns the same result as Whois database' do
         expect(subject['RS-RC-26462']).to eq(
-          {:ipv4=>{nil=>["137.238.0.0/16"]}, :ipv6=>{nil=>[]}}
+          {:ipv4=>{nil=>["137.238.0.0/16"]}, :ipv6=>{nil=>["2620:0:5080::/48"]}}
         )
       end
     end
 
     describe 'nested as-set' do
-      subject { send_query(irr, 'AS-PDOXUPLINKS', source: :apnic) }
+      subject { send_query(whois, 'AS-PDOXUPLINKS', source: :apnic) }
 
       it 'returns the same result as Whois database' do
         expect(subject['AS-PDOXUPLINKS']).to eq(
           {:ipv4=>
              {"AS703"=>[],
-              "AS1221"=>["203.92.26.0/24", "155.143.128.0/17"],
+              "AS1221"=>["155.143.128.0/17", "203.92.26.0/24"],
               "AS2764"=>[],
               "AS7474"=>[],
               "AS7657"=>[],
@@ -180,11 +180,11 @@ describe 'IRR as-set resolution' do
     end
 
     describe 'nested route-set' do
-      subject { send_query(irr, 'RS-RR-COUDERSPORT') }
+      subject { send_query(whois, 'RS-RR-COUDERSPORT') }
 
       it 'returns the same result as Whois database' do
         expect(subject['RS-RR-COUDERSPORT']).to eq(
-          {:ipv4=>{nil=>["107.14.160.0/20", "71.74.32.0/20", "75.180.128.0/19"]},
+          {:ipv4=>{nil=>["71.74.32.0/20", "75.180.128.0/19", "107.14.160.0/20"]},
            :ipv6=>{nil=>[]}}
         )
       end
