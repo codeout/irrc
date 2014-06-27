@@ -18,6 +18,12 @@ module Irrc
         set_default_arguments
 
         Irrc::Cli::YamlPrinter.print perform
+
+      rescue
+        $stderr.print "#{$!.class}: " unless $!.instance_of?(RuntimeError)
+        $stderr.puts $!.message
+
+        exit 1
       end
 
 
@@ -94,13 +100,8 @@ Use --help for usage.
                    Irrc::Client.new(@options.threads)
                  end
 
-        begin
-          client.query(@options.host, @args, source: @options.source, protocol: @options.protocol)
-          client.perform
-        rescue
-          $stderr.puts $!.message
-          exit 1
-        end
+        client.query(@options.host, @args, source: @options.source, protocol: @options.protocol)
+        client.perform
       end
     end
   end
