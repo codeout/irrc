@@ -35,12 +35,12 @@ Description:
 Options:
         EOS
 
-        opts.on '-h HOSTNAME', 'Specify a IRR/whois host to send queries.',
-                                'This switch is mandatory.' do |host|
+        opts.on '-h HOST', 'Specify FQDN of IRR / Whois server to send queries.',
+                           'IRR / Whois name is also acceptable. This switch is mandatory.' do |host|
           @options.host = host
         end
 
-        opts.on '-s SOURCE', '--source', 'Specify an authoritative IRR/whois source name.',
+        opts.on '-s SOURCE', '--source', 'Specify an authoritative IRR / Whois source name.',
                                          'Multiply this option for multiple SOURCE.',
                                          "eg) #{opts.program_name} -s jpirr -s radb AS-JPNIC" do |source|
           @options.source |= [source]
@@ -54,7 +54,7 @@ Options:
           @options.protocol |= [:ipv6]
         end
 
-        opts.on '-t NUMBER', '--threads', 'Number of threads to resolve prefixes per IRR/whois server.' do |threads|
+        opts.on '-t NUMBER', '--threads', 'Number of threads to resolve prefixes per IRR / Whois server.' do |threads|
           @options.threads = threads
         end
 

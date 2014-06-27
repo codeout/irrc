@@ -5,13 +5,13 @@ require 'irrc/query'
 
 module Irrc
 
-  # Public: IRR/whois client to manage child client workers and queues.
+  # Public: IRR / Whois client to manage child client workers and queues.
   class Client
-    # Public: Create a new IRR/whois client worker manager.
+    # Public: Create a new IRR / Whois client worker manager.
     #         You can customize the logger by specifying a block.
     #         The default logger is STDERR printer of more severe messages than INFO.
     #
-    # threads - Number of threads to resolve prefixes per IRR/whois server. (default: 1)
+    # threads - Number of threads to resolve prefixes per IRR / Whois server. (default: 1)
     # block   - An optional block that can be used to customize the logger.
     #
     # Examples
@@ -24,16 +24,16 @@ module Irrc
       @block = block
     end
 
-    # Public: Enqueue an IRR/whois query.
+    # Public: Enqueue an IRR / Whois query.
     #
-    # host    - FQDN of IRR/whois server. IRR name is also accespted (eg: jpirr).
+    # host    - FQDN of IRR / Whois server. IRR name is also acceptable. (eg: jpirr)
     # objects - IRR objects to extract. (eg: as-set, route-set, aut-num object)
     #           Array form is also acceptable for multiple objects.
     # options - The Hash options to pass to IRR. (default: {procotol: [:ipv4, :ipv6]})
     #           :source   - Specify authoritative IRR source names.
     #                       If not given, any source will be accepted. (optional)
     #           :protocol - :ipv4, :ipv6 or [:ipv4, :ipv6]
-    #                       A String or Symbol of protcol name is accepted. (optional)
+    #                       A String or Symbol of protcol name is acceptable. (optional)
     #
     # Examples
     #

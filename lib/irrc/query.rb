@@ -4,7 +4,7 @@ require 'irrc/subquery'
 
 module Irrc
 
-  # Public: IRR/whois query and result container.
+  # Public: IRR / Whois query and result container.
   class Query
     include Irrc::Irr
     include Irrc::QueryStatus
@@ -19,7 +19,7 @@ module Irrc
     #           :source   - Specify authoritative IRR source names.
     #                       If not given, any source will be accepted. (optional)
     #           :protocol - :ipv4, :ipv6 or [:ipv4, :ipv6]
-    #                       A String or Symbol of protcol name is accepted. (optional)
+    #                       A String or Symbol of protcol name is acceptable. (optional)
     #
     # Examples
     #
@@ -54,7 +54,7 @@ module Irrc
     # prefixes - route object(s) in String. Array form is also acceptable for multiple objects.
     # autnum   - Which aut-num has the route object(s).
     # protocol - Which protocol the route object(s) is for. :ipv4 or :ipv6.
-    #            A String or Symbol of protcol name is accepted.
+    #            A String or Symbol of protcol name is acceptable.
     def add_prefix_result(prefixes, autnum, protocol)
       result[protocol] ||= {}
       result[protocol][autnum] ||= []

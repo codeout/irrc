@@ -7,7 +7,7 @@ module Irrc
     #
     # host   - FQDN of IRR / Whois. IRR / Whois name is also accespted.
     # queue  - Queue object having query jobs.
-    #          IRR /Whois name is also accespted.
+    #          IRR / Whois name is also accespted.
     # block  - An optional block that can be used to customize the logger.
     #
     # Examples
