@@ -43,7 +43,7 @@ module Irrc
         cache(query.object) {
           result = execute(command)
           parse_objects_from_set(result).map {|object|
-            expand_if_necessary(query.fork(object), type)
+            expand_if_necessary(query.fork(object), type) unless query.ancestor_object?(object)
           }.flatten.uniq.compact
         }
       rescue

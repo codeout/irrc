@@ -20,5 +20,17 @@ module Irrc
     def parent=(parent)
       @_parent = parent
     end
+
+    # Public: Returns the IRR object to query including those from ancestor query objects.
+    #
+    # Returns: Array of String.
+    def ancestor_objects
+      @_ancestor_objects ||= Array(parent && parent.ancestor_objects) << object
+    end
+
+    # Public: Returns true if object is listed in ancestor IRR objects.
+    def ancestor_object?(object)
+      ancestor_objects.include?(object)
+    end
   end
 end
