@@ -109,6 +109,52 @@ describe 'Whois as-set resolution' do
     end
   end
 
+  context 'When as-sets cross-refers to each other' do
+    before do
+      allow_any_instance_of(Irrc::Whoisd::Client).to receive(:execute) {|client, command|
+        case command
+        when /AS-A/
+          "members:        AS1\nmembers:        AS-B"
+        when /AS-B/
+          "members:        AS-A"
+        when /AS1/
+          "route:          192.0.2.0/24"
+        end
+      }
+    end
+    let(:looped_as_set) { 'AS-A' }
+
+    subject { send_query(whois, looped_as_set) }
+
+    it 'breaks out of the loop and returns something' do
+      expect(subject['AS-A']).to eq(
+        {:ipv4=>{"AS1"=>["192.0.2.0/24"]}, :ipv6=>{"AS1"=>[]}}
+      )
+    end
+  end
+
+  context 'When route-sets cross-refers to each other' do
+    before do
+      allow_any_instance_of(Irrc::Whoisd::Client).to receive(:execute) {|client, command|
+        case command
+        when /RS-A/
+          "members:        192.0.2.0/24\nmembers:        RS-B"
+        when /RS-B/
+          "members:        RS-A"
+        end
+      }
+    end
+    let(:looped_route_set) { 'RS-A' }
+
+    subject { send_query(whois, looped_route_set) }
+
+    it 'breaks out of the loop and returns something' do
+      expect(subject['RS-A']).to eq(
+        {:ipv4=>{nil=>["192.0.2.0/24"]}, :ipv6=>{nil=>[]}}
+      )
+    end
+  end
+
   context 'When invalid Whois server name specified' do
     subject { send_query(:invalid, as_set) }
 
