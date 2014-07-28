@@ -100,7 +100,7 @@ Use --help for usage.
                    Irrc::Client.new(@options.threads)
                  end
 
-        client.query(@options.host, @args, source: @options.source, protocol: @options.protocol)
+        client.query @options.host, @args, source: @options.source, protocol: @options.protocol
         client.perform
       end
     end

@@ -64,8 +64,8 @@ You can load irrc as a library and use it easily in your own code.
 require 'irrc'
 
 client = Irrc::Client.new
-client.query(:jpirr, 'AS-JPNIC', source: :jpirr)    # queries JPIRR about AS-JPNIC with a SOURCE: filter
-client.query(:ripe, 'AS-RIPENCC', protocol: :ipv4)  # queries RIPE Whoisd about AS-RIPENCC for IPv4 only
+client.query :jpirr, 'AS-JPNIC', source: :jpirr     # queries JPIRR about AS-JPNIC with a SOURCE: filter
+client.query :ripe, 'AS-RIPENCC', protocol: :ipv4   # queries RIPE Whoisd about AS-RIPENCC for IPv4 only
 client.perform                                      # returns the results in a Hash
 ```
 
