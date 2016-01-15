@@ -159,7 +159,7 @@ describe 'IRR as-set resolution' do
         expect(subject['AS-PDOXUPLINKS']).to eq(
           {:ipv4=>
              {"AS703"=>[],
-              "AS1221"=>["203.92.26.0/24", "155.143.128.0/17"],
+              "AS1221"=>["203.92.26.0/24"],
               "AS2764"=>[],
               "AS7474"=>[],
               "AS7657"=>[],
