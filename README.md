@@ -192,4 +192,4 @@ For questions or feedbacks write to my twitter @codeout.
 
 ## Copyright and License
 
-Copyright (c) 2014 Shintaro Kojima. Code released under the [MIT license](LICENSE).
+Copyright (c) 2016 Shintaro Kojima. Code released under the [MIT license](LICENSE).
