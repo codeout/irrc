@@ -159,7 +159,7 @@ describe 'Whois as-set resolution' do
     subject { send_query(:invalid, as_set) }
 
     it 'reports an error' do
-      expect { subject }.to raise_error
+      expect { subject }.to raise_error "Unknown type of IRR for 'invalid'."
     end
   end
 
@@ -167,7 +167,7 @@ describe 'Whois as-set resolution' do
     subject { send_query('non-resolvable.localdomain', as_set) }
 
     it 'reports an error' do
-      expect { subject }.to raise_error
+      expect { subject }.to raise_error "Unknown type of IRR for 'non-resolvable.localdomain'."
     end
   end
 
@@ -175,7 +175,7 @@ describe 'Whois as-set resolution' do
     subject { send_query('192.0.2.1', as_set) }
 
     it 'reports an error' do
-      expect { subject }.to raise_error
+      expect { subject }.to raise_error "Unknown type of IRR for '192.0.2.1'."
     end
   end
 
@@ -183,7 +183,7 @@ describe 'Whois as-set resolution' do
     subject { send_query('127.0.0.1', as_set) }
 
     it 'reports an error' do
-      expect { subject }.to raise_error
+      expect { subject }.to raise_error "Unknown type of IRR for '127.0.0.1'."
     end
   end
 
