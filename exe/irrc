@@ -6,112 +6,84 @@ require 'yaml'
 require 'irrc'
 
 
-class Client
-  def initialize(args)
-    @args = args
-    @options = Struct.new(:host, :source, :protocol, :threads, :debug).new(nil, [], [], 1, nil)
+options = Struct.new(:host, :source, :protocol, :threads, :debug).new(nil, [], [], 1, nil)
+
+opts = OptionParser.new do |opts|
+  opts.banner = <<-EOS
+
+Usage: #{opts.program_name} [options] object [object ...]
+
+       If no [-4|-6|--ipv4|--ipv6] option given, it tries both of ipv4 and ipv6.
+  EOS
+  opts.separator ''
+  opts.separator 'Options:'
+
+  opts.on '-h HOST', 'Specify FQDN of IRR / Whois server to send queries.',
+          'IRR / Whois name is also acceptable. This switch is mandatory.' do |host|
+    options.host = host
   end
 
-  def start
-    OptionParser.new(&method(:options)).parse!(@args)
-
-    verify_arguments
-    set_default_arguments
-
-    YamlPrinter.print perform
-
-  rescue
-    $stderr.print "#{$!.class}: " unless $!.instance_of?(RuntimeError)
-    $stderr.puts $!.message
-
-    exit 1
+  opts.on '-s SOURCE', '--source', 'Specify an authoritative IRR / Whois source name.',
+          'Multiply this option for multiple SOURCE.',
+          "eg) #{opts.program_name} -s jpirr -s radb AS-JPNIC" do |source|
+    options.source |= [source]
   end
 
-
-  private
-
-  def options(opts)
-    opts.banner = <<-EOS
-Usage: #{opts.program_name} [options] [objects ...]
-
-Description:
-  Better IRR client to resolve as-set, route-set or aut-num object into prefixes.
-
-  If no [-4|-6|--ipv4|--ipv6] option given, it tries both of ipv4 and ipv6.
-
-Options:
-    EOS
-
-    opts.on '-h HOST', 'Specify FQDN of IRR / Whois server to send queries.',
-            'IRR / Whois name is also acceptable. This switch is mandatory.' do |host|
-      @options.host = host
-    end
-
-    opts.on '-s SOURCE', '--source', 'Specify an authoritative IRR / Whois source name.',
-            'Multiply this option for multiple SOURCE.',
-            "eg) #{opts.program_name} -s jpirr -s radb AS-JPNIC" do |source|
-      @options.source |= [source]
-    end
-
-    opts.on '-4', '--ipv4', 'Resolve IPv4 prefixes.' do
-      @options.protocol |= [:ipv4]
-    end
-
-    opts.on '-6', '--ipv6', 'Resolve IPv6 prefixes.' do
-      @options.protocol |= [:ipv6]
-    end
-
-    opts.on '-t NUMBER', '--threads', 'Number of threads to resolve prefixes per IRR / Whois server.' do |threads|
-      @options.threads = threads
-    end
-
-    opts.on '-d', '--debug', 'Print raw queries, answers and additional informations.' do
-      @options.debug = true
-    end
+  opts.on '-4', '--ipv4', 'Resolve IPv4 prefixes.' do
+    options.protocol |= [:ipv4]
   end
 
-  def verify_arguments
-    if @args.empty?
-      $stderr.puts <<-EOS
-Missing Argument: objects required.
-
-Use --help for usage.
-      EOS
-      exit 1
-    end
-
-    unless @options.host
-      $stderr.puts <<-EOS
-Missing Argument: -h option is required.
-
-Use --help for usage.
-      EOS
-      exit 1
-    end
+  opts.on '-6', '--ipv6', 'Resolve IPv6 prefixes.' do
+    options.protocol |= [:ipv6]
   end
 
-  def set_default_arguments
-    @options.protocol = [:ipv4, :ipv6] if @options.protocol.empty?
+  opts.on '-t NUMBER', '--threads', 'Number of threads to resolve prefixes per IRR / Whois server.' do |threads|
+    options.threads = threads
   end
 
-  def perform
-    client = if @options.debug
-               Irrc::Client.new(@options.threads) {|c| c.logger = Logger.new(STDERR) }
-             else
-               Irrc::Client.new(@options.threads)
-             end
+  opts.on '-d', '--debug', 'Print raw queries, answers and additional informations.' do
+    options.debug = true
+  end
 
-    client.query @options.host, @args, source: @options.source, protocol: @options.protocol
-    client.perform
+  opts.on_tail '--help', 'Show this message' do
+    puts "irrc: Better IRR client to resolve as-set, route-set or aut-num object into prefixes", opts
+    exit
+  end
+
+  opts.on_tail '-v', '--version', 'Show version' do
+    puts Irrc::VERSION
+    exit
   end
 end
+opts.parse!
 
-class YamlPrinter
-  class << self
-    def print(hash)
-      puts hash.to_yaml
-    end
-  end
+
+if ARGV.empty?
+  $stderr.puts 'Missing Argument: object is required.', opts
+  abort
 end
 
-Client.new(ARGV).start
+unless options.host
+  $stderr.puts 'Missing Argument: -h option is required.', opts
+  abort
+end
+
+
+options.protocol = [:ipv4, :ipv6] if options.protocol.empty?
+
+
+begin
+  client = if options.debug
+             Irrc::Client.new(options.threads) {|c| c.logger = Logger.new(STDERR) }
+           else
+             Irrc::Client.new(options.threads)
+           end
+
+  client.query options.host, ARGV, source: options.source, protocol: options.protocol
+  puts client.perform.to_yaml
+rescue
+  $stderr.print "#{$!.class}: " unless $!.instance_of?(RuntimeError)
+  $stderr.puts $!.message
+
+  abort
+end
