@@ -17,8 +17,8 @@ module Irrc
     # Public: Set a parent (associated) Query object, which is probably as-set.
     #
     # parent - Parent Query object.
-    def parent=(parent)
-      @_parent = parent
+    def parent=(query)
+      @_parent = query
     end
 
     # Public: Returns the IRR object to query including those from ancestor query objects.
