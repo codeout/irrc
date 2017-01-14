@@ -1,1 +1,0 @@
-require 'irrc/cli/client'
