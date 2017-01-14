@@ -20,7 +20,7 @@ module Irrc
       include Irrc::Runner
       include Irrc::Irrd::Api
 
-      attr_reader :host, :queue
+      attr_reader :fqdn, :queue
 
 
       private
@@ -48,7 +48,7 @@ module Irrc
       def set_source(query)
         command = set_source_command(query.sources)
         if execute(command) =~ error_code
-          raise "'#{command}' failed on '#{host}' (#{$1})."
+          raise "'#{command}' failed on '#{fqdn}' (#{$1})."
         end
       end
 
@@ -57,7 +57,7 @@ module Irrc
         result = execute(command)
         query.add_aut_num_result parse_aut_nums_from_as_set(result)
       rescue
-        raise "'#{command}' failed on '#{host}' (#{$!.message})."
+        raise "'#{command}' failed on '#{fqdn}' (#{$!.message})."
       end
 
       def resolve_prefixes_from_route_set(query)
@@ -69,7 +69,7 @@ module Irrc
           query.add_prefix_result prefixes[protocol], nil, protocol
         end
       rescue
-        raise "'#{command}' failed on '#{host}' (#{$!.message})."
+        raise "'#{command}' failed on '#{fqdn}' (#{$!.message})."
       end
 
       def resolve_prefixes_from_aut_nums(query)
