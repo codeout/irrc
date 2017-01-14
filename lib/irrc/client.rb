@@ -40,7 +40,7 @@ module Irrc
     #   client.query :jpirr, 'AS-JPNIC', source: :jpirr, protocol: :ipv4
     #   client.query :jpirr, 'AS-JPNIC', source: [:jpirr, :radb]
     def query(host, objects, options={})
-      raise ArgumentError, 'host required.' unless host
+      raise ArgumentError, 'host is required.' unless host
       fqdn = Irrc::Irr.host(host) || host
 
       queues[fqdn] ||= Queue.new
