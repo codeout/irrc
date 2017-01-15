@@ -1,7 +1,5 @@
 module Irrc
   module Parameter
-    attr_reader :fqdn, :queue, :cache
-
     # Public: Create a new IRRd / Whoisd client worker.
     #         You can customize the logger by specifying a block.
     #         The default logger is STDERR printer of more severe messages than INFO.

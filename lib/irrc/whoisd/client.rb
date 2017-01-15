@@ -45,7 +45,7 @@ module Irrc
           }.flatten.uniq.compact
         }
       rescue
-        raise "'#{command}' failed on '#{fqdn}' (#{$!.message})."
+        raise "'#{command}' failed on '#{@fqdn}' (#{$!.message})."
       end
 
       def expand_if_necessary(query, type)

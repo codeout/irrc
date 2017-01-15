@@ -4,7 +4,7 @@ module Irrc
     #
     # object  - IRR / Whois object to extract. (eg: as-set, route-set, aut-num object)
     def fork(object)
-      Query.new(object, source: sources, protocol: protocols).tap {|q|
+      Query.new(object, source: @sources, protocol: @protocols).tap {|q|
         q.parent = self
       }.tap {|c| self.add_child c }
     end

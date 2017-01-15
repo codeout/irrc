@@ -11,8 +11,8 @@ module Irrc
     end
 
     def connect
-      @connection ||= logger.info("Connecting to #{fqdn}") &&
-        Net::Telnet.new('Host' => fqdn,
+      @connection ||= logger.info("Connecting to #{@fqdn}") &&
+        Net::Telnet.new('Host' => @fqdn,
         'Port' => 43,
         'Telnetmode' => false,
         'Prompt' => return_code)
@@ -20,7 +20,7 @@ module Irrc
 
     def close
       if established?
-        logger.info "Closing a connection to #{fqdn}"
+        logger.info "Closing a connection to #{@fqdn}"
         @connection.close
       end
     end

@@ -4,12 +4,12 @@ module Irrc
       done = []
 
       loop do
-        if queue.empty?
+        if @queue.empty?
           close
           return done
         end
 
-        query = queue.pop
+        query = @queue.pop
         connect unless established?
 
         begin
