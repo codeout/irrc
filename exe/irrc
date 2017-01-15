@@ -74,7 +74,7 @@ options.protocol = [:ipv4, :ipv6] if options.protocol.empty?
 
 begin
   client = if options.debug
-             Irrc::Client.new(options.threads) {|c| c.logger = Logger.new(STDERR) }
+             Irrc::Client.new(options.threads) {|c| c.logger = Irrc::Logging::Logger.new(STDERR) }
            else
              Irrc::Client.new(options.threads)
            end
