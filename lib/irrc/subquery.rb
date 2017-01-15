@@ -46,12 +46,17 @@ module Irrc
     # Public: Returns the root IRR object of the nested query
     #
     # Returns: String.
-    def root_object
-      @_root_object ||= if parent
-                          parent.root_object
-                        else
-                          object
-                        end
+    def root
+      @_root ||= if parent
+                   parent.root
+                 else
+                   self
+                 end
+    end
+
+    # Public: Returns true if the query is root.
+    def root?
+      root == self
     end
 
     # Public: Returns true if object is listed in ancestor IRR objects.

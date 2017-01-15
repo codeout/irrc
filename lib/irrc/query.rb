@@ -40,6 +40,8 @@ module Irrc
     #
     # autnums - aut-num object(s) in String. Array form is also acceptable for multiple objects.
     def add_aut_num_result(autnums)
+      result = root.result
+
       @protocols.each do |protocol|
         result[protocol] ||= {}
 
@@ -56,6 +58,8 @@ module Irrc
     # protocol - Which protocol the route object(s) is for. :ipv4 or :ipv6.
     #            A String or Symbol of protcol name is acceptable.
     def add_prefix_result(prefixes, autnum, protocol)
+      result = root.result
+
       result[protocol] ||= {}
       result[protocol][autnum] ||= []
       result[protocol][autnum].push *Array(prefixes)

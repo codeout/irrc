@@ -13,19 +13,24 @@ module Irrc
         connect unless established?
 
         begin
-          process query
+          query = process(query)
           query.success
+          query.children.each {|q| @queue << q }
         rescue
           logger.error $!.message
           query.fail
         end
 
-        done << query
+        done << query if query.root?
       end
     end
 
 
     private
+
+    def cache(object, sources, &block)
+      @cache["#{object}:#{sources}"] ||= yield
+    end
 
     def execute(command)
       return if command.nil? || command == ''

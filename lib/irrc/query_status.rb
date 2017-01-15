@@ -9,7 +9,7 @@ module Irrc
     end
 
     def failed?
-      @failed
+      @failed == true
     end
 
     def succeeded?
