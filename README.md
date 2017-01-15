@@ -146,34 +146,12 @@ client = Irrc::Client.new {|c| c.logger = Rails.logger }
 
 Here is a quick performance comparison with peval and irrpt.
 
-* Ordinary as-set
-
-| CLI command                     |      user |     system |     cpu |      total |
-| :------------------------------ | --------: | ---------: | ------: | ---------: |
-| peval -h jpirr.nic.ad.jp AS-OCN |     0.14s |      0.04s |      1% |      9.397 |
-| irrpt_eval AS-OCN               |     0.35s |      0.06s |      5% |      8.021 |
-| **irrc -h jpirr AS-OCN**        | **0.42s** |  **0.09s** |  **4%** | **10.639** |
-
-* Huge as-set
-
-Object caching may contribute to the query performance.
-
-| CLI command                               |        user |     system |     cpu |       total |
-| :---------------------------------------- | ----------: | ---------: | ------: | ----------: |
-| peval -h jpirr.nic.ad.jp AS-HURRICANE     |      67.29s |      1.21s |     22% |     4:58.16 |
-| irrpt_eval AS-HURRICANE                   |     163.10s |      1.38s |     43% |     6:18.17 |
-| **irrc -h jpirr AS-HURRICANE**            |  **20.26s** |  **1.84s** |  **7%** | **4:54.37** |
-
-* Multiple as-set
-
-Multi-threading and object caching may contribute to the query performance.
-
-| CLI command                                                    |        user |     system |     cpu |       total |
-| :------------------------------------------------------------- | ----------: | ---------: | ------: | ----------: |
-| for i in AS-HURRICANE AS-GBLX; peval -h jpirr.nic.ad.jp $i     |      76.47s |      1.08s |     20% |     6:15.80 |
-| irrpt_fetch                                                    |     174.21s |      1.29s |     44% |     6:38.50 |
-| irrc -h jpirr AS-HURRICANE AS-GBLX                             |      22.28s |      1.75s |      8% |     4:34.31 |
-| **irrc -h jpirr -t 2 AS-HURRICANE AS-GBLX**                    |  **23.04s** |  **1.81s** |  **9%** | **4:09.27** |
+| CLI command                                      |      user |     system |     cpu |      total |
+| :----------------------------------------------- | --------: | ---------: | ------: | ---------: |
+| peval -h jpirr.nic.ad.jp 'afi ipv4, ipv6 AS-OCN' |     0.15s |      0.04s |      3% |      4.959 |
+| irrpt_list_prefixes AS-OCN                       |     0.21s |      0.09s |      3% |      9.693 |
+| **irrc -h jpirr AS-OCN**                         | **0.42s** |  **0.12s** |  **5%** |  **9.622** |
+| **irrc -h jpirr -t 4 AS-OCN**                    | **0.39s** |  **0.13s** | **19%** |  **2.754** |
 
 
 ## Contributing
