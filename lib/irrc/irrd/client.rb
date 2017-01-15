@@ -20,8 +20,6 @@ module Irrc
       include Irrc::Runner
       include Irrc::Irrd::Api
 
-      attr_reader :fqdn, :queue
-
 
       private
 

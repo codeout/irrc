@@ -20,8 +20,6 @@ module Irrc
       include Irrc::Runner
       include Irrc::Whoisd::Api
 
-      attr_reader :fqdn, :queue
-
 
       private
 
