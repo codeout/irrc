@@ -7,6 +7,7 @@ module Irrc
         # NOTE: trick to avoid dead lock
         if last_thread? && @queue.empty?
           terminate
+          logger.debug "Queue #{threads - 1} guard objects"
           (threads - 1).times { @queue.push nil }
           return done
         end
@@ -22,9 +23,10 @@ module Irrc
         connect unless established?
 
         begin
-          logger.info "Processing: #{query.object}"
+          logger.info "Processing #{query.object}"
           query = process(query)
           query.success
+          logger.debug "Queue new #{query.children.size} queries"
           query.children.each {|q| @queue << q }
         rescue
           logger.error "#{$!.message} when processing #{query.object} for #{query.root.object}"
@@ -45,8 +47,8 @@ module Irrc
     def execute(command)
       return if command.nil? || command == ''
 
-      logger.debug "Executing: #{command}"
-      connection.cmd(command).tap {|result| logger.debug "Returned: #{result}" }
+      logger.debug %(Executing "#{command}")
+      connection.cmd(command).tap {|result| logger.debug %(Got "#{result}") }
     end
 
     def last_thread?
