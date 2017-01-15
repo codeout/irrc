@@ -5,7 +5,7 @@ module Irrc
 
       loop do
         # NOTE: trick to avoid dead lock
-        if last_thread? && @queue.empty?
+        if last_thread_of?(threads) && @queue.empty?
           terminate
           logger.debug "Queue #{threads - 1} guard objects"
           (threads - 1).times { @queue.push nil }
@@ -51,8 +51,8 @@ module Irrc
       connection.cmd(command).tap {|result| logger.debug %(Got "#{result}") }
     end
 
-    def last_thread?
-      Thread.list.reject(&:stop?).size == 1
+    def last_thread_of?(threads)
+      Thread.list.reject(&:stop?).size == 1 && Thread.list.size == threads+1
     end
 
     def terminate
