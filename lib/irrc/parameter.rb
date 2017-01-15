@@ -15,9 +15,10 @@ module Irrc
     #   Irrc::Irrd::Client.new('jpirr.nic.ad.jp', queue) {|c|
     #     c.logger = Logger.new('irrc.log')
     #   }
-    def initialize(fqdn, queue, &block)
+    def initialize(fqdn, queue, cache, &block)
       self.fqdn = fqdn
       self.queue = queue
+      @cache = cache
       instance_eval(&block) if block_given?
     end
 

@@ -43,9 +43,8 @@ module Irrc
       raise ArgumentError, 'host is required.' unless host
       fqdn = Irrc::Irr.host(host) || host
 
-      queues[fqdn] ||= Queue.new
       Array(objects).map {|object|
-        queues[fqdn] << Irrc::Query.new(object, options)
+        queue(fqdn) << Irrc::Query.new(object, options)
       }
     end
 
@@ -58,7 +57,7 @@ module Irrc
       queues.each_with_object([]) {|(fqdn, queue), workers|
         @thread_limit.times.map {
           workers << Thread.start {
-            done.push *worker_class(fqdn).new(fqdn, queues[fqdn], &@block).run
+            done.push *worker_class(fqdn).new(fqdn, queue(fqdn), cache(fqdn), &@block).run
           }
         }
       }.each {|t| t.join }
@@ -90,7 +89,19 @@ module Irrc
     private
 
     def queues
-      @queues = {}
+      @queues ||= {}
+    end
+
+    def queue(fqdn)
+      queues[fqdn] ||= Queue.new
+    end
+
+    def caches
+      @caches ||= {}
+    end
+
+    def cache(fqdn)
+      caches[fqdn] ||= {}
     end
 
     def worker_class(fqdn)
