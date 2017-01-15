@@ -58,7 +58,7 @@ module Irrc
     def add_prefix_result(prefixes, autnum, protocol)
       result[protocol] ||= {}
       result[protocol][autnum] ||= []
-      result[protocol][autnum] |= Array(prefixes)
+      result[protocol][autnum].push *Array(prefixes)
     end
 
 
