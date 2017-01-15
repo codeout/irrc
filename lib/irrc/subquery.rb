@@ -6,7 +6,7 @@ module Irrc
     def fork(object)
       Query.new(object, source: sources, protocol: protocols).tap {|q|
         q.parent = self
-      }
+      }.tap {|c| self.add_child c }
     end
 
     # Public: Returns the parent (associated) Query object, which is probably as-set.
@@ -21,11 +21,37 @@ module Irrc
       @parent = query
     end
 
+    # Public: Returns child Query objects
+    def children
+      @children ||= []
+    end
+
+    # Public: Add a child Query object
+    def add_child(query)
+      children << query
+    end
+
+    # Public: Delete a child Query object
+    def delete_child(query)
+      children.delete(query)
+    end
+
     # Public: Returns the IRR object to query including those from ancestor query objects.
     #
     # Returns: Array of String.
     def ancestor_objects
       @_ancestor_objects ||= Array(parent && parent.ancestor_objects) << object
+    end
+
+    # Public: Returns the root IRR object of the nested query
+    #
+    # Returns: String.
+    def root_object
+      @_root_object ||= if parent
+                          parent.root_object
+                        else
+                          object
+                        end
     end
 
     # Public: Returns true if object is listed in ancestor IRR objects.
