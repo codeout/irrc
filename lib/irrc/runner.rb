@@ -27,7 +27,7 @@ module Irrc
           query.success
           query.children.each {|q| @queue << q }
         rescue
-          logger.error $!.message
+          logger.error "#{$!.message} when processing #{query.object} for #{query.root.object}"
           query.fail
         end
 
