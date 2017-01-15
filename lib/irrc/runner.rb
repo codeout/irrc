@@ -1,16 +1,24 @@
 module Irrc
   module Runner
-    def run
+    def run(threads)
       done = []
 
       loop do
-        if @queue.empty?
-          logger.info "No more queries"
-          close
+        # NOTE: trick to avoid dead lock
+        if last_thread? && @queue.empty?
+          terminate
+          (threads - 1).times { @queue.push nil }
           return done
         end
 
         query = @queue.pop
+
+        # NOTE: trick to avoid dead lock
+        if query.nil?
+          terminate
+          return done
+        end
+
         connect unless established?
 
         begin
@@ -39,6 +47,15 @@ module Irrc
 
       logger.debug "Executing: #{command}"
       connection.cmd(command).tap {|result| logger.debug "Returned: #{result}" }
+    end
+
+    def last_thread?
+      Thread.list.reject(&:stop?).size == 1
+    end
+
+    def terminate
+      logger.info "No more queries"
+      close
     end
   end
 end

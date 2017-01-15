@@ -58,7 +58,7 @@ module Irrc
         @thread_limit.times.map.with_index {|i|
           workers << Thread.start {
             Thread.current[:id] = i+1
-            done.push *worker_class(fqdn).new(fqdn, queue(fqdn), cache(fqdn), &@block).run
+            done.push *worker_class(fqdn).new(fqdn, queue(fqdn), cache(fqdn), &@block).run(@thread_limit)
           }
         }
       }.each {|t| t.join }
