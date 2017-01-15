@@ -26,60 +26,60 @@ module Irrc
       def process(query)
         case query.object_type
         when 'as-set'
-          query.add_aut_num_result objects_from_set(query, 'as-set')
-          resolve_prefixes_from_aut_nums query
+          expand_set query, 'as-set'
         when 'route-set'
-          resolve_prefixes_from_route_set query
+          expand_set query, 'route-set'
         when 'aut-num'
-          query.add_aut_num_result query.object
-          resolve_prefixes_from_aut_nums query
+          expand_aut_num query
         end
+
+        query
       end
 
-      def objects_from_set(query, type)
-        command = expand_set_command(query.object, query.sources, type)
-        cache(query.object) {
-          result = execute(command)
-          parse_objects_from_set(result).map {|object|
-            expand_if_necessary(query.fork(object), type) unless query.ancestor_object?(object)
-          }.flatten.uniq.compact
+      # Public: Expand an as-set or route-set object into any object.
+      def expand_set(query, type)
+        result = cache(query.object, query.sources) {
+          begin
+            command = expand_set_command(query.object, query.sources, type)
+            execute(command)
+          rescue
+            raise "'#{command}' failed on '#{@fqdn}' (#{$!.message})."
+          end
         }
-      rescue
-        raise "'#{command}' failed on '#{@fqdn}' (#{$!.message})."
-      end
 
-      def expand_if_necessary(query, type)
-        if query.object_type == type
-          objects_from_set(query, type)
-        else
-          query.object
-        end
-      end
+        parse_objects_from_set(result).each do |object|
+          next if query.ancestor_object?(object)
 
-      def resolve_prefixes_from_route_set(query)
-        prefixes = classify_by_protocol(objects_from_set(query, 'route-set'))
-        query.protocols.each do |protocol|
-          query.add_prefix_result prefixes[protocol], nil, protocol
-        end
-      end
+          child = query.fork(object)
 
-      def resolve_prefixes_from_aut_nums(query)
-        unless query.protocols.empty?
-          # ipv4 and ipv6 should have the same result so far
-          (query.result[:ipv4] || query.result[:ipv6]).keys.each do |autnum|
-            command = expand_aut_num_command(autnum, query.sources)
-            result = execute(command)
-
+          case child.object_type
+          when 'aut-num'
+            query.add_aut_num_result object
+          when nil  # it looks prefix which is a member of route-set
+            prefix = classify_by_protocol(object)
             query.protocols.each do |protocol|
-              query.add_prefix_result parse_prefixes_from_aut_num(result, protocol), autnum, protocol
+              query.add_prefix_result prefix[protocol], nil, protocol
             end
           end
         end
       end
 
-      def cache(object, &block)
-        @_cache ||= {}
-        @_cache[object] ||= yield
+      # Public: Expand an aut-num object into routes
+      def expand_aut_num(query)
+        return if query.protocols.empty?
+
+        result = cache(query.object, query.sources) {
+          begin
+            command = expand_aut_num_command(query.object, query.sources)
+            execute(command)
+          rescue
+            raise "'#{command}' failed on '#{@fqdn}' (#{$!.message})."
+          end
+        }
+
+        query.protocols.each do |protocol|
+          query.add_prefix_result parse_prefixes_from_aut_num(result, protocol), query.object, protocol
+        end
       end
     end
   end

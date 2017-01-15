@@ -37,11 +37,11 @@ describe 'Whois as-set resolution' do
   context 'When as-set resolution is done but something wrong while further processes' do
     subject { send_query(whois, as_set) }
     before do
-      allow_any_instance_of(Irrc::Whoisd::Client).to receive(:resolve_prefixes_from_aut_nums){ raise }
+      allow_any_instance_of(Irrc::Whoisd::Client).to receive(:expand_aut_num){ raise }
     end
 
     it 'ignores a halfway result' do
-      expect(subject).to eq({})
+      expect(subject).to eq({"AS-JPNIC"=>{:ipv4=>{"AS2515"=>[]}, :ipv6=>{"AS2515"=>[]}}})
     end
   end
 
