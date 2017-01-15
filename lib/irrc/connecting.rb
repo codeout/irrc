@@ -28,12 +28,5 @@ module Irrc
     def established?
       @connection && !@connection.sock.closed?
     end
-
-    def execute(command)
-      return if command.nil? || command == ''
-
-      logger.debug "Executing: #{command}"
-      @connection.cmd(command).tap {|result| logger.debug "Returned: #{result}" }
-    end
   end
 end
