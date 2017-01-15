@@ -5,6 +5,7 @@ module Irrc
 
       loop do
         if @queue.empty?
+          logger.info "No more queries"
           close
           return done
         end
@@ -13,6 +14,7 @@ module Irrc
         connect unless established?
 
         begin
+          logger.info "Processing: #{query.object}"
           query = process(query)
           query.success
           query.children.each {|q| @queue << q }
