@@ -90,7 +90,7 @@ module Irrc
     private
 
     def queues
-      @_queues ||= {}
+      @queues = {}
     end
 
     def worker_class(fqdn)

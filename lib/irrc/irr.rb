@@ -80,11 +80,11 @@ module Irrc
 
 
     def object
-      @_object
+      @object
     end
 
     def object=(object)
-      @_object = object
+      @object = object
     end
 
     # Public: Returns the object type to query.
@@ -92,7 +92,7 @@ module Irrc
     #
     # Returns: A String. ('as-set', 'route-set' or 'aut-num')
     def object_type
-      case @_object
+      case @object
       when /^AS-[\w-]+$|:AS-[\w-]+$/i
         'as-set'
       when /^RS-[\w-]+$|:RS-[\w-]+$/i
