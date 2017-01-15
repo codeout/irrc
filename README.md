@@ -99,7 +99,7 @@ AS-JPNIC:               # queried object
 
 * Ruby >= 2.0.0
 
-Successfully tested with 2.0.0, 2.1.0, 2.1.1, 2.1.2.
+Successfully tested with 2.1.9, 2.2.6, 2.3.3 and 2.4.0.
 
 
 ## Threading
