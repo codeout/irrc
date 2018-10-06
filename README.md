@@ -138,6 +138,10 @@ $ irrc -h jpirr -d AS-JPNIC
 To use modified Logger:
 
 ```ruby
+client = Irrc::Client.new {|c| c.logger = Irrc::Logging::Logger.new(STDERR) }
+
+# For Rails,
+
 client = Irrc::Client.new {|c| c.logger = Rails.logger }
 ```
 
