@@ -5,7 +5,7 @@ describe 'IRR Invalid object resolution' do
 
   describe 'Try as-jpnic with JPIRR' do
     context 'When invalid object specified' do
-      subject { send_query(irr, 'INVALID') }
+      subject {send_query(irr, 'INVALID')}
 
       it "doesn't report an error" do
         expect(subject['INVALID']).to eq({})
@@ -13,7 +13,7 @@ describe 'IRR Invalid object resolution' do
     end
 
     context 'When a blank String given for IRR object to resolve' do
-      subject { send_query(irr, '') }
+      subject {send_query(irr, '')}
 
       it "doesn't report an error" do
         expect(subject['']).to eq({})
@@ -21,7 +21,7 @@ describe 'IRR Invalid object resolution' do
     end
 
     context 'When nil given for IRR object to resolve' do
-      subject { send_query(irr, nil) }
+      subject {send_query(irr, nil)}
 
       it 'does nothing even reporting the error' do
         expect_any_instance_of(Irrc::Irrd::Client).not_to receive(:connect)
