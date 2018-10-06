@@ -54,8 +54,8 @@ module Irrc
       connection.cmd(command).tap {|result| logger.debug %(Got "#{result}") }
     end
 
-    def last_thread_of?(threads)
-      Thread.list.reject(&:stop?).size == 1 && Thread.list.size == threads+1
+    def last_thread_of?(num_threads)
+      return @queue.num_waiting == num_threads - 1
     end
 
     def terminate
