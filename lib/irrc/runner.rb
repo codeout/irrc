@@ -4,17 +4,20 @@ module Irrc
       done = []
 
       loop do
-        # NOTE: trick to avoid dead lock
+        # Trick to avoid dead lock
         if last_thread_of?(threads) && @queue.empty?
           terminate
+
+          # Queue guard objects notifying other threads to return results
           logger.debug "Queue #{threads - 1} guard objects"
           (threads - 1).times { @queue.push nil }
+
           return done
         end
 
         query = @queue.pop
 
-        # NOTE: trick to avoid dead lock
+        # Trick to avoid dead lock
         if query.nil?
           terminate
           return done
