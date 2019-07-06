@@ -14,7 +14,7 @@ module Irrc
           raise $1
         end
 
-        result.scan(Irrc::Irr.members_tag).flatten.map {|i| i.gsub(/#.*/, '').split(/\s*,?\s+/)}.flatten
+        result.scan(Irrc::Irr.members_tag).flatten.map {|i| i.split(/\s*,?\s+/)}.flatten
       end
 
       def expand_route_set_command(route_set, sources)
