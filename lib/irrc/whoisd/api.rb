@@ -14,8 +14,7 @@ module Irrc
           raise $1
         end
 
-        result.scan(Irrc::Irr.members_tag).flatten.map {|i|
-               i.gsub(/#.*/,"").split(/\s*,?\s+/)}.flatten
+        result.scan(Irrc::Irr.members_tag).flatten.map {|i| i.gsub(/#.*/, '').split(/\s*,?\s+/)}.flatten
       end
 
       def expand_route_set_command(route_set, sources)
@@ -31,7 +30,7 @@ module Irrc
       end
 
       def parse_prefixes_from_aut_num(result, protocol)
-       result.scan(Irrc::Irr.route_tag(protocol)).flatten.uniq
+        result.scan(Irrc::Irr.route_tag(protocol)).flatten.uniq
       end
 
       # See http://www.ripe.net/data-tools/support/documentation/ripe-database-query-reference-manual#a1--ripe-database-query-server-response-codes-and-messages for the error code

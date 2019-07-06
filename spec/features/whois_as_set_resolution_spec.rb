@@ -128,7 +128,7 @@ describe 'Whois as-set resolution' do
 
     it 'breaks out of the loop and returns something' do
       expect(subject['AS-A']).to eq(
-                                     {:ipv4 => {"AS1" => ["192.0.2.0/24"]}, :ipv6 => {"AS1" => []}}
+                                   {:ipv4 => {"AS1" => ["192.0.2.0/24"]}, :ipv6 => {"AS1" => []}}
                                  )
     end
   end
@@ -150,7 +150,7 @@ describe 'Whois as-set resolution' do
 
     it 'breaks out of the loop and returns something' do
       expect(subject['RS-A']).to eq(
-                                     {:ipv4 => {nil => ["192.0.2.0/24"]}, :ipv6 => {nil => []}}
+                                   {:ipv4 => {nil => ["192.0.2.0/24"]}, :ipv6 => {nil => []}}
                                  )
     end
   end
@@ -193,7 +193,7 @@ describe 'Whois as-set resolution' do
 
       it 'returns the same result as Whois database' do
         expect(subject['RS-RC-26462']).to eq(
-                                              {:ipv4 => {nil => ["137.238.0.0/16"]}, :ipv6 => {nil => ["2620:0:5080::/48"]}}
+                                            {:ipv4 => {nil => ["137.238.0.0/16"]}, :ipv6 => {nil => ["2620:0:5080::/48"]}}
                                           )
       end
     end
@@ -224,8 +224,8 @@ describe 'Whois as-set resolution' do
                      "AS7657" => [],
                      "AS4565" => [],
                      "AS5650" => [],
-                     "AS6461" => ["2001:df0:7c80::/48"]},
-                 })
+                     "AS6461" => ["2001:df0:7c80::/48"]}}
+              )
       end
     end
 
@@ -234,10 +234,10 @@ describe 'Whois as-set resolution' do
 
       it 'returns the same result as Whois database' do
         expect(subject['RS-RR-COUDERSPORT'])
-            .to eq(
-                    {:ipv4 => {nil => ["71.74.32.0/20", "75.180.128.0/19", "107.14.160.0/20"]},
-                     :ipv6 => {nil => []}}
-                )
+          .to eq(
+                {:ipv4 => {nil => ["71.74.32.0/20", "75.180.128.0/19", "107.14.160.0/20"]},
+                 :ipv6 => {nil => []}}
+              )
       end
     end
   end

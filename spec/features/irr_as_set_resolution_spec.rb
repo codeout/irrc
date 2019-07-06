@@ -147,7 +147,7 @@ describe 'IRR as-set resolution' do
 
       it 'returns the same result as Whois database' do
         expect(subject['RS-RC-26462']).to eq(
-                                              {:ipv4 => {nil => ["137.238.0.0/16"]}, :ipv6 => {nil => []}}
+                                            {:ipv4 => {nil => ["137.238.0.0/16"]}, :ipv6 => {nil => []}}
                                           )
       end
     end
@@ -178,8 +178,8 @@ describe 'IRR as-set resolution' do
                      "AS6461" => ["2001:df0:7c80::/48"],
                      "AS703" => [],
                      "AS7474" => ["2405:9000::/32"],
-                     "AS7657" => []},
-                 })
+                     "AS7657" => []}}
+              )
       end
     end
 
@@ -188,10 +188,10 @@ describe 'IRR as-set resolution' do
 
       it 'returns the same result as Whois database' do
         expect(subject['RS-RR-COUDERSPORT'])
-            .to eq(
-                    {:ipv4 => {nil => ["107.14.160.0/20", "71.74.32.0/20", "75.180.128.0/19"]},
-                     :ipv6 => {nil => []}}
-                )
+          .to eq(
+                {:ipv4 => {nil => ["107.14.160.0/20", "71.74.32.0/20", "75.180.128.0/19"]},
+                 :ipv6 => {nil => []}}
+              )
       end
     end
   end
