@@ -36,7 +36,7 @@ module Irrc
       def parse_prefixes_from_route_set(result)
         case result
         when success_code
-          result.gsub(/^#{$1}$/, '').strip.split.reject {|p| p =~ /^A\d+$/ }.uniq
+          result.gsub(/^#{$1}$/, '').strip.split.reject {|p| p =~ /^A\d+$/}.uniq
         when error_code
           raise $1
         end
