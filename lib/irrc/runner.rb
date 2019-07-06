@@ -51,7 +51,11 @@ module Irrc
       return if command.nil? || command == ''
 
       logger.debug %(Executing "#{command}")
-      connection.cmd(command).tap {|result| logger.debug %(Got "#{result}") }
+
+      result = connection.cmd(command)
+      logger.debug %(Got "#{result}")
+
+      result.gsub(/#.*$/, '')  # Trim comments
     end
 
     def last_thread_of?(num_threads)
