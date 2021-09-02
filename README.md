@@ -1,6 +1,6 @@
 # irrc
 
-[![Build Status](https://travis-ci.org/codeout/irrc.svg)](https://travis-ci.org/codeout/irrc)
+[![Test on Ubuntu](https://github.com/codeout/irrc/actions/workflows/test-linux.yaml/badge.svg)](https://github.com/codeout/irrc/actions/workflows/test-linux.yaml)
 [![Code Climate](https://codeclimate.com/github/codeout/irrc.png)](https://codeclimate.com/github/codeout/irrc)
 [![Inline docs](http://inch-ci.org/github/codeout/irrc.svg)](http://inch-ci.org/github/codeout/irrc)
 
