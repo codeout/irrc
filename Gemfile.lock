@@ -28,10 +28,10 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  bundler (~> 2.0)
+  bundler
   irrc!
-  rake (~> 12.3)
+  rake
   rspec
 
 BUNDLED WITH
-   2.0.2
+   2.2.26

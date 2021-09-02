@@ -7,8 +7,8 @@ describe 'IRR as-set resolution' do
     subject {send_query(irr_fqdn, 'AS-JPNIC')}
 
     it 'returns ipv4 and ipv6 prefixes by default' do
-      expect(subject['AS-JPNIC'][:ipv4]['AS2515']).to include '192.41.192.0/24', '202.12.30.0/24',
-                                                              '211.120.240.0/21', '211.120.248.0/24'
+      expect(subject['AS-JPNIC'][:ipv4]['AS2515']).to include '103.131.194.0/23', '192.41.192.0/24',
+                                                              '202.12.30.0/24', '211.120.240.0/21'
       expect(subject['AS-JPNIC'][:ipv6]['AS2515']).to include '2001:dc2::/32', '2001:0fa0::/32'
     end
   end
@@ -143,74 +143,50 @@ describe 'IRR as-set resolution' do
 
   describe 'NOTE: These may fail due to Whois database changes, not code. Check Whois database if fails.' do
     describe 'route-set' do
-      subject {send_query(irr, 'RS-RC-26462')}
+      subject {send_query(:radb, 'RS-RC-26462')}
 
       it 'returns the same result as Whois database' do
         expect(subject['RS-RC-26462']).to eq(
-                                            {:ipv4 => {nil => ["137.238.0.0/16"]}, :ipv6 => {nil => []}}
+                                            {:ipv4 => {nil => ["137.238.0.0/16"]},
+                                             :ipv6 => {nil => ["2620:0:5080::/48"]}}
                                           )
       end
     end
 
     describe 'nested as-set' do
-      subject {send_query(irr, 'AS-TRANSIX-E')}
+      subject {send_query(irr, 'AS-MFEED')}
 
       it 'returns the same result as Whois database' do
-        expect(subject['AS-TRANSIX-E'])
+        expect(subject['AS-MFEED'])
           .to eq({:ipv4=>
-                    {"AS173"=>["163.138.160.0/19", "192.47.168.0/23"],
-                     "AS2511"=>
-                       ["163.138.0.0/17",
-                        "192.5.216.0/24",
-                        "192.26.94.0/24",
-                        "192.47.167.0/24",
-                        "163.138.128.0/19"],
-                     "AS38644"=>["115.69.232.0/21", "210.173.190.0/24"],
+                    {"AS131079"=>["210.173.191.0/24"],
+                     "AS173"=>[],
+                     "AS2511"=>[],
+                     "AS38644"=>["210.173.190.0/24", "115.69.232.0/21"],
                      "AS4697"=>
                        ["192.47.162.0/23",
                         "192.47.164.0/23",
                         "192.26.93.0/24",
                         "192.172.237.0/24",
-                        "192.16.178.0/24"],
-                     "AS55391"=>
-                       ["217.178.0.0/16",
-                        "103.2.249.0/24",
-                        "115.69.232.0/22",
-                        "115.69.233.0/24",
-                        "103.2.250.0/23",
-                        "115.69.232.0/23",
-                        "14.0.8.0/22",
-                        "103.2.251.0/24",
-                        "103.2.248.0/22",
-                        "103.2.248.0/24",
-                        "103.2.250.0/24",
-                        "115.69.235.0/24",
-                        "115.69.234.0/23",
-                        "103.2.248.0/23",
-                        "217.178.0.0/18",
-                        "115.69.232.0/24",
-                        "217.178.128.0/17",
-                        "115.69.234.0/24"],
+                        "192.16.178.0/24",
+                        "192.47.174.0/23",
+                        "192.47.176.0/22"],
                      "AS55817"=>[],
-                     "AS59091"=>["163.138.192.0/19"],
+                     "AS59091"=>[],
                      "AS7521"=>
-                       ["218.100.45.0/24",
-                        "210.173.160.0/19",
-                        "210.173.160.0/21",
-                        "210.173.172.0/24",
+                       ["210.173.160.0/21",
                         "210.173.180.0/22",
-                        "210.173.184.0/22",
-                        "210.173.188.0/23",
+                        "210.173.172.0/24",
                         "210.173.168.0/23",
                         "210.173.170.0/24",
-                        "210.173.176.0/24",
-                        "210.173.178.0/25"]},
+                        "210.173.186.0/23",
+                        "210.173.160.0/19"]},
                   :ipv6=>
-                    {"AS173"=>[],
+                    {"AS131079"=>["2001:03a0:f007::/48"],
+                     "AS173"=>[],
                      "AS2511"=>[],
                      "AS38644"=>["2001:03a0:f006::/48"],
                      "AS4697"=>["2001:fa8::/32"],
-                     "AS55391"=>["2409:10::/28", "2404:8e00::/32"],
                      "AS55817"=>[],
                      "AS59091"=>[],
                      "AS7521"=>["2001:7fa:7::/48", "2001:3a0::/32"]}}
@@ -219,7 +195,7 @@ describe 'IRR as-set resolution' do
     end
 
     describe 'nested route-set' do
-      subject {send_query(irr, 'RS-RR-COUDERSPORT')}
+      subject {send_query(:radb, 'RS-RR-COUDERSPORT')}
 
       it 'returns the same result as Whois database' do
         expect(subject['RS-RR-COUDERSPORT'])
