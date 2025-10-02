@@ -1,7 +1,6 @@
 # irrc
 
 [![Test on Ubuntu](https://github.com/codeout/irrc/actions/workflows/test-linux.yaml/badge.svg)](https://github.com/codeout/irrc/actions/workflows/test-linux.yaml)
-[![Code Climate](https://codeclimate.com/github/codeout/irrc.png)](https://codeclimate.com/github/codeout/irrc)
 [![Inline docs](http://inch-ci.org/github/codeout/irrc.svg)](http://inch-ci.org/github/codeout/irrc)
 
 irrc is a lightweight and flexible client of IRR / Whois Database to expand arbitrary as-set and route-set objects into a list of origin ASs and prefixes belonging to those ASs. It will concurrently queries multiple IRR / Whois Databases for performance.
